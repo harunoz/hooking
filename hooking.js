@@ -51,7 +51,7 @@ try {
     FileSystemWritableFileStream.prototype.CreateWritable = async function newCreate(name,options) {
       console.log("2")
        //Uncomment to not prevent the deletion.
-   //   await _oldCreateWriteFirst .call(this,name,options);
+      await _oldCreateWriteFirst.call(this,name,options);
       console.log("3")
       window._notifyCreateWritable(name);
 
@@ -60,19 +60,22 @@ try {
     const _oldCreateWrite = FileSystemWritableFileStream.prototype.write;
     console.log("1")
     FileSystemWritableFileStream.prototype.write = async function newWrite(name,options) {
-      console.log("2")
-       //Uncomment to not prevent the deletion.
+
       await _oldCreateWrite.call(this,name,options);
-      console.log("3")
+   //   page.setJavaScriptEnabled(false)
       window._notifyWrite(name);
 
     };
     const _oldCloseWriter = FileSystemWritableFileStream.prototype.close;
-
     FileSystemWritableFileStream.prototype.close = async function newClose(name,options) {
 
+      if(1){
+      await _oldCloseWriter.call(this,name,options);
+      }
+      else{
+        await _oldCloseWriter.call(this,name,options);
+      }
 
-//      await _oldCloseWriter.call(this,name,options);
 
       window._notifyWriteClose(name);
 
